@@ -23,6 +23,17 @@ namespace Reversi
         public MainWindow()
         {
             InitializeComponent();
+
+            var list = new List<int>();
+
+            int boardSize = 6;
+
+            for (int i = 0; i < boardSize; i++)
+            {
+                list.AddRange(Enumerable.Range(i * 10, boardSize));
+            }
+
+            DataContext = list;
         }
     }
 }
