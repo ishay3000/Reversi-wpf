@@ -28,12 +28,16 @@ namespace Reversi
             int boardSize = 6;
             GameBoard = new GameBoard(boardSize);
 
-            DataContext = GameBoard.GameTiles;
+            DataContext = GameBoard;
         }
 
         private void TileButton_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show((sender as Button)?.Tag.ToString());
+            var btn = sender as Button;
+            var coordination = btn.Tag.ToString().Split(':');
+            int row = Convert.ToInt32(coordination[0]), col = Convert.ToInt32(coordination[1]);
+
+            GameBoard.ConquerTile(row, col);
         }
     }
 }

@@ -11,6 +11,7 @@ namespace Reversi
     {
         public Brush Brush { get; set; }
         public string Tag { get; set; }
+        public bool Conquered { get; set; } = false;
 
         public Tile()
         {

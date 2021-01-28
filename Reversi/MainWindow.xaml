@@ -11,7 +11,7 @@
         <StackPanel>
             <Label Name="TurnLabel" HorizontalAlignment="Center" />
 
-            <ItemsControl ItemsSource="{Binding }"
+            <ItemsControl ItemsSource="{Binding GameTiles}"
                           HorizontalAlignment="Left" VerticalAlignment="Top">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -20,7 +20,9 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Button Tag="{Binding Tag}" Background="{Binding Brush}" Click="TileButton_Click"
+                        <Button Tag="{Binding Tag}" Background="{Binding Brush}"
+                                IsEnabled="{Binding !Conquered, Mode=TwoWay}"
+                                Click="TileButton_Click"
                                 Height="40" Width="50" Margin="4" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
