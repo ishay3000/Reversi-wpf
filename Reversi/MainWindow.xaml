@@ -8,7 +8,8 @@
         Title="Reversi" Height="340" Width="365"
         WindowStartupLocation="CenterScreen">
     <Grid x:Name="BoardGrid">
-        <ItemsControl ItemsSource="{Binding}"
+        
+        <ItemsControl ItemsSource="{Binding }"
                       HorizontalAlignment="Left" VerticalAlignment="Top">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -17,7 +18,7 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Button Content="{Binding}" Tag="{Binding}"
+                    <Button Tag="{Binding Tag}" Background="{Binding Brush}"
                             Height="40" Width="50" Margin="4"/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
