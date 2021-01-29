@@ -58,6 +58,7 @@
     <Compile Include="BasePropertyChanged.cs" />
     <Compile Include="GameBoard.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="ReversiGameStrategy.cs" />
     <Compile Include="Tile.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -16,6 +16,7 @@ namespace Reversi
         public GameBoard(int boardSize)
         {
             this.boardSize = boardSize;
+            ReversiGameStrategy.BoardSize = boardSize;
             GameTiles = new List<Tile>();
             InitializeTiles();
         }
@@ -34,9 +35,8 @@ namespace Reversi
         public void ConquerTile(int row, int col)
         {
             // TODO: Add actual game logic here.
-            var coordination = (boardSize * row) + col;
-            GameTiles[coordination].Conquered = true;
-            //MessageBox.Show(GameTiles[coordination].Conquered.ToString());
+            var anchorTile = (boardSize * row) + col;
+            ReversiGameStrategy.StartConquering(GameTiles, anchorTile);
         }
     }
 }
