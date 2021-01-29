@@ -11,6 +11,7 @@ namespace Reversi
     {
         private Brush _brush;
         private string _tag;
+        private bool _conquered;
 
         public Brush Brush
         {
@@ -32,12 +33,25 @@ namespace Reversi
             }
         }
 
-        public bool Conquered { get; set; } = false;
+        public bool Conquered
+        {
+            get => _conquered;
+            set
+            {
+                _conquered = value;
+                OnPropertyChanged();
+            }
+        }
 
         public Tile()
         {
             Brush = Brushes.Transparent;
-            Tag = "H";
+        }
+
+        public void Conquer(PlayerType player)
+        {
+            Conquered = true;
+            Brush = PlayerTypeToColor.GetPlayerBrush(player);
         }
     }
 }

@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows.Documents;
+using System.Windows.Media;
 
 namespace Reversi
 {
@@ -7,49 +9,62 @@ namespace Reversi
     {
         public static int BoardSize { get; set; }
         private static int CurrentAnchorTile { get; set; }
+        private static List<Tile> CurrentTiles { get; set; }
+        private static PlayerType CurrentPlayerType { get; set; }
 
 
-        public static void StartConquering(List<Tile> tiles, int anchorTile)
+        public static void StartConquering(PlayerType player, List<Tile> tiles, int anchorTile)
+        {
+            CurrentPlayerType = player;
+            CurrentAnchorTile = anchorTile;
+            CurrentTiles = tiles;
+
+            CurrentTiles[CurrentAnchorTile].Conquer(CurrentPlayerType);
+
+            // ConquerHorizontal(1);
+            ConquerHorizontal(-1);
+            // ConquerVertical(1);
+            // ConquerVertical(-1);
+            // ConquerNorthEast();
+            // ConquerNorthWest();
+            // ConquerSouthEast();
+            // ConquerSouthWest();
+        }
+
+        private static void ConquerHorizontal(int increment)
+        {
+            int column = CurrentAnchorTile;
+            while (column % BoardSize != 0)
+            {
+                CurrentTiles[column].Conquer(CurrentPlayerType);
+                column += increment;
+            }
+        }
+
+        private static void ConquerVertical(int increment)
+        {
+            for (int row = CurrentAnchorTile - BoardSize; row >= 0; row -= BoardSize)
+            {
+                CurrentTiles[row].Brush = Brushes.Red;
+            }
+        }
+
+        private static void ConquerNorthWest()
         {
 
         }
 
-        private static void ConquerLeft(List<Tile> tiles)
+        private static void ConquerNorthEast()
         {
 
         }
 
-        private static void ConquerRight(List<Tile> tiles)
+        private static void ConquerSouthWest()
         {
 
         }
 
-        private static void ConquerUp(List<Tile> tiles)
-        {
-
-        }
-
-        private static void ConquerDown(List<Tile> tiles)
-        {
-
-        }
-
-        private static void ConquerNorthWest(List<Tile> tiles)
-        {
-
-        }
-
-        private static void ConquerNorthEast(List<Tile> tiles)
-        {
-
-        }
-
-        private static void ConquerSouthWest(List<Tile> tiles)
-        {
-
-        }
-
-        private static void ConquerSouthEast(List<Tile> tiles)
+        private static void ConquerSouthEast()
         {
 
         }

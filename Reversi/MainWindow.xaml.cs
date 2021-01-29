@@ -37,7 +37,7 @@ namespace Reversi
             var coordination = btn.Tag.ToString().Split(':');
             int row = Convert.ToInt32(coordination[0]), col = Convert.ToInt32(coordination[1]);
 
-            GameBoard.ConquerTile(row, col);
+            GameBoard.ConquerTile(PlayerType.BluePlayer, row, col);
         }
     }
 }

@@ -32,11 +32,10 @@ namespace Reversi
             }
         }
 
-        public void ConquerTile(int row, int col)
+        public void ConquerTile(PlayerType player, int row, int col)
         {
-            // TODO: Add actual game logic here.
             var anchorTile = (boardSize * row) + col;
-            ReversiGameStrategy.StartConquering(GameTiles, anchorTile);
+            ReversiGameStrategy.StartConquering(player, GameTiles, anchorTile);
         }
     }
 }
