@@ -11,7 +11,7 @@ namespace Reversi
     public class GameBoard
     {
         public List<Tile> GameTiles { get; }
-        private readonly int boardSize;
+        public readonly int boardSize;
 
         public GameBoard(int boardSize)
         {
@@ -27,7 +27,7 @@ namespace Reversi
             {
                 for (int j = 0; j < boardSize; j++)
                 {
-                    GameTiles.Add(new Tile() { Tag = $"{i}:{j}" });
+                    GameTiles.Add(new Tile($"{i}:{j}"));
                 }
             }
         }

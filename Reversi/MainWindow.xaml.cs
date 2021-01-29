@@ -20,13 +20,12 @@ namespace Reversi
     /// </summary>
     public partial class MainWindow : Window
     {
-        public ReversiGame ReversiGame;
         public MainWindow()
         {
             InitializeComponent();
 
             int boardSize = 6;
-            ReversiGame = new ReversiGame(boardSize);
+            ReversiGame.InitializeGame(boardSize);
 
             DataContext = ReversiGame.GameBoard;
         }

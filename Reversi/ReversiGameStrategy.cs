@@ -10,72 +10,69 @@ namespace Reversi
         public static int BoardSize { get; set; }
         private static int CurrentAnchorTile { get; set; }
         private static List<Tile> CurrentTiles { get; set; }
-        private static Player CurrentPlayerType { get; set; }
+        private static Player CurrentPlayer { get; set; }
 
 
         public static void StartConquering(Player player, List<Tile> tiles, int anchorTile)
         {
-            CurrentPlayerType = player;
+            CurrentPlayer = player;
             CurrentAnchorTile = anchorTile;
             CurrentTiles = tiles;
 
-            CurrentTiles[CurrentAnchorTile].Conquer(CurrentPlayerType);
+            CurrentTiles[CurrentAnchorTile].Conquer(CurrentPlayer);
+            ConquerHorizontal(1);
+            ConquerHorizontal(-1);
+        }
 
-            // ConquerHorizontal(1);
-            // ConquerHorizontal(-1);
-            // ConquerVertical(1);
-            // ConquerVertical(-1);
-            // ConquerNorthEast();
-            // ConquerNorthWest();
-            // ConquerSouthEast();
-            // ConquerSouthWest();
+        private static bool IsValidTile(int index)
+        {
+            return index < 0 || index > BoardSize;
         }
 
         private static void ConquerHorizontal(int increment)
         {
-            int column = CurrentAnchorTile;
-            while (column % BoardSize != 0)
+            int index = CurrentAnchorTile;
+            List<Tile> opponentTiles = new List<Tile>();
+            bool encounteredBlankTile = false;
+            if (index % BoardSize == 0)
             {
-                // if (CurrentTiles[column].)
-                // {
-                //     
-                // }
-                column += increment;
+                return;
             }
-            if (column == CurrentAnchorTile)
+
+            do
             {
-                CurrentTiles[column].Conquer(CurrentPlayerType);
-            }
-        }
+                index += increment;
+                if (!IsValidTile(index))
+                {
+                    break;
+                }
+                var tile = CurrentTiles[index];
+                if (!tile.Conquered)
+                {
+                    encounteredBlankTile = true;
+                    break;
+                }
+                if (tile.OccupyingPlayer.PlayerID == CurrentPlayer.PlayerID)
+                {
+                    break;
+                }
 
-        private static void ConquerVertical(int increment)
-        {
-            for (int row = CurrentAnchorTile - BoardSize; row >= 0; row -= BoardSize)
+                opponentTiles.Add(CurrentTiles[index]);
+            } while (index % BoardSize != 0);
+
+            if (encounteredBlankTile)
             {
-                CurrentTiles[row].Brush = Brushes.Red;
+                return;
+            }
+            foreach (Tile opponentTile in opponentTiles)
+            {
+                opponentTile.Conquer(CurrentPlayer);
             }
         }
 
-        private static void ConquerNorthWest()
+        private static void ConquerDiagonally(int increment)
         {
 
         }
-
-        private static void ConquerNorthEast()
-        {
-
-        }
-
-        private static void ConquerSouthWest()
-        {
-
-        }
-
-        private static void ConquerSouthEast()
-        {
-
-        }
-
-
     }
 }
