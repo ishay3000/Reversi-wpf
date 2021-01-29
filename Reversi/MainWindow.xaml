@@ -20,7 +20,7 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Button Tag="{Binding Tag}" Background="{Binding Brush}"
+                        <Button Tag="{Binding Tag}" Background="{Binding Brush, Mode=TwoWay}"
                                 IsEnabled="{Binding !Conquered, Mode=TwoWay}"
                                 Click="TileButton_Click"
                                 Height="40" Width="50" Margin="4" />

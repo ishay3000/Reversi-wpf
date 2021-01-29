@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 
 namespace Reversi
 {
@@ -35,7 +36,7 @@ namespace Reversi
             // TODO: Add actual game logic here.
             var coordination = (boardSize * row) + col;
             GameTiles[coordination].Conquered = true;
-            MessageBox.Show(GameTiles[coordination].Conquered.ToString());
+            //MessageBox.Show(GameTiles[coordination].Conquered.ToString());
         }
     }
 }
