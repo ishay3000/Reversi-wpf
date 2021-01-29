@@ -60,8 +60,9 @@
     </ApplicationDefinition>
     <Compile Include="BasePropertyChanged.cs" />
     <Compile Include="GameBoard.cs" />
-    <Compile Include="PlayerType.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="ReversiGame.cs" />
     <Compile Include="ReversiGameStrategy.cs" />
     <Compile Include="Tile.cs" />
     <Page Include="MainWindow.xaml">

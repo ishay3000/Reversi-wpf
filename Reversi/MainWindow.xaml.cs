@@ -20,15 +20,15 @@ namespace Reversi
     /// </summary>
     public partial class MainWindow : Window
     {
-        public GameBoard GameBoard;
+        public ReversiGame ReversiGame;
         public MainWindow()
         {
             InitializeComponent();
 
             int boardSize = 6;
-            GameBoard = new GameBoard(boardSize);
+            ReversiGame = new ReversiGame(boardSize);
 
-            DataContext = GameBoard;
+            DataContext = ReversiGame.GameBoard;
         }
 
         private void TileButton_Click(object sender, RoutedEventArgs e)
@@ -37,7 +37,7 @@ namespace Reversi
             var coordination = btn.Tag.ToString().Split(':');
             int row = Convert.ToInt32(coordination[0]), col = Convert.ToInt32(coordination[1]);
 
-            GameBoard.ConquerTile(PlayerType.BluePlayer, row, col);
+            ReversiGame.MakeMove(row, col);
         }
     }
 }

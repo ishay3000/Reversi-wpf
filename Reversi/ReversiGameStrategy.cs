@@ -10,10 +10,10 @@ namespace Reversi
         public static int BoardSize { get; set; }
         private static int CurrentAnchorTile { get; set; }
         private static List<Tile> CurrentTiles { get; set; }
-        private static PlayerType CurrentPlayerType { get; set; }
+        private static Player CurrentPlayerType { get; set; }
 
 
-        public static void StartConquering(PlayerType player, List<Tile> tiles, int anchorTile)
+        public static void StartConquering(Player player, List<Tile> tiles, int anchorTile)
         {
             CurrentPlayerType = player;
             CurrentAnchorTile = anchorTile;
@@ -22,7 +22,7 @@ namespace Reversi
             CurrentTiles[CurrentAnchorTile].Conquer(CurrentPlayerType);
 
             // ConquerHorizontal(1);
-            ConquerHorizontal(-1);
+            // ConquerHorizontal(-1);
             // ConquerVertical(1);
             // ConquerVertical(-1);
             // ConquerNorthEast();
@@ -36,8 +36,15 @@ namespace Reversi
             int column = CurrentAnchorTile;
             while (column % BoardSize != 0)
             {
-                CurrentTiles[column].Conquer(CurrentPlayerType);
+                // if (CurrentTiles[column].)
+                // {
+                //     
+                // }
                 column += increment;
+            }
+            if (column == CurrentAnchorTile)
+            {
+                CurrentTiles[column].Conquer(CurrentPlayerType);
             }
         }
 
