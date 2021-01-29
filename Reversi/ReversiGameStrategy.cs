@@ -20,25 +20,34 @@ namespace Reversi
             CurrentTiles = tiles;
 
             CurrentTiles[CurrentAnchorTile].Conquer(CurrentPlayer);
-            ConquerHorizontal(1);
-            ConquerHorizontal(-1);
+            // Right
+            ConquerTilesInDirection(1);
+            // Left
+            ConquerTilesInDirection(-1);
+            // Down
+            ConquerTilesInDirection(BoardSize);
+            // Up
+            ConquerTilesInDirection(-BoardSize);
+            // South west
+            ConquerTilesInDirection(BoardSize - 1);
+            // South east
+            ConquerTilesInDirection(BoardSize + 1);
+            // North east
+            ConquerTilesInDirection(-BoardSize + 1);
+            // North west
+            ConquerTilesInDirection(-BoardSize - 1);
         }
 
         private static bool IsValidTile(int index)
         {
-            return index < 0 || index > BoardSize;
+            return index > 0 && index < Math.Pow(BoardSize, 2);
         }
 
-        private static void ConquerHorizontal(int increment)
+        private static void ConquerTilesInDirection(int increment)
         {
             int index = CurrentAnchorTile;
             List<Tile> opponentTiles = new List<Tile>();
             bool encounteredBlankTile = false;
-            if (index % BoardSize == 0)
-            {
-                return;
-            }
-
             do
             {
                 index += increment;
@@ -68,11 +77,6 @@ namespace Reversi
             {
                 opponentTile.Conquer(CurrentPlayer);
             }
-        }
-
-        private static void ConquerDiagonally(int increment)
-        {
-
         }
     }
 }

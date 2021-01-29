@@ -9,13 +9,11 @@
         WindowStartupLocation="CenterScreen">
     <Grid x:Name="BoardGrid">
         <StackPanel>
-            <Label Name="TurnLabel" HorizontalAlignment="Center" />
-
             <ItemsControl ItemsSource="{Binding GameTiles}"
                           HorizontalAlignment="Left" VerticalAlignment="Top">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <UniformGrid Columns="{Binding boardSize}" />
+                        <UniformGrid Columns="{Binding BoardSize}" />
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>

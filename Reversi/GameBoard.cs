@@ -11,11 +11,11 @@ namespace Reversi
     public class GameBoard
     {
         public List<Tile> GameTiles { get; }
-        public readonly int boardSize;
+        public int BoardSize { get; }
 
         public GameBoard(int boardSize)
         {
-            this.boardSize = boardSize;
+            this.BoardSize = boardSize;
             ReversiGameStrategy.BoardSize = boardSize;
             GameTiles = new List<Tile>();
             InitializeTiles();
@@ -23,9 +23,9 @@ namespace Reversi
 
         private void InitializeTiles()
         {
-            for (int i = 0; i < boardSize; i++)
+            for (int i = 0; i < BoardSize; i++)
             {
-                for (int j = 0; j < boardSize; j++)
+                for (int j = 0; j < BoardSize; j++)
                 {
                     GameTiles.Add(new Tile($"{i}:{j}"));
                 }
@@ -34,7 +34,7 @@ namespace Reversi
 
         public void ConquerTile(Player player, int row, int col)
         {
-            var anchorTile = (boardSize * row) + col;
+            var anchorTile = (BoardSize * row) + col;
             ReversiGameStrategy.StartConquering(player, GameTiles, anchorTile);
         }
     }
