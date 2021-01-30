@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows.Documents;
-using System.Windows.Media;
 
 namespace Reversi
 {
@@ -20,22 +18,23 @@ namespace Reversi
             CurrentAnchorTile = anchorTile;
             CurrentTiles = tiles;
 
-            // Right
-            ConquerTilesInDirection(1);
-            // Left
-            ConquerTilesInDirection(-1);
-            // Down
-            ConquerTilesInDirection(BoardSize);
-            // Up
-            ConquerTilesInDirection(-BoardSize);
-            // South west
-            ConquerTilesInDirection(BoardSize - 1);
-            // South east
-            ConquerTilesInDirection(BoardSize + 1);
-            // North east
-            ConquerTilesInDirection(-BoardSize + 1);
-            // North west
-            ConquerTilesInDirection(-BoardSize - 1);
+            int right = 1,
+                left = -1,
+                down = BoardSize,
+                up = -BoardSize,
+                southWest = BoardSize - 1,
+                southEast = BoardSize + 1,
+                northEast = -BoardSize + 1,
+                northWest = -BoardSize - 1;
+
+            ConquerTilesInDirection(right);
+            ConquerTilesInDirection(left);
+            ConquerTilesInDirection(down);
+            ConquerTilesInDirection(up);
+            ConquerTilesInDirection(southWest);
+            ConquerTilesInDirection(southEast);
+            ConquerTilesInDirection(northWest);
+            ConquerTilesInDirection(northEast);
 
             if (ConqueredAnyTile)
             {

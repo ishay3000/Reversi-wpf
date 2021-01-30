@@ -9,7 +9,8 @@
         WindowStartupLocation="CenterScreen">
     <Grid x:Name="BoardGrid">
         <StackPanel>
-            <TextBlock Text="{Binding CurrentPlayerColor, StringFormat={}Current player: {0}}"></TextBlock>
+            <TextBlock Text="{Binding CurrentPlayerColor, StringFormat={}Current player: {0}}"
+                       HorizontalAlignment="Center" />
 
             <ItemsControl ItemsSource="{Binding GameEntities.GameBoard.GameTiles}"
                           HorizontalAlignment="Left" VerticalAlignment="Top">
