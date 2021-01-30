@@ -11,15 +11,15 @@ namespace Reversi
         private static int CurrentAnchorTile { get; set; }
         private static List<Tile> CurrentTiles { get; set; }
         private static Player CurrentPlayer { get; set; }
+        private static bool ConqueredAnyTile { get; set; } = false;
 
 
-        public static void StartConquering(Player player, List<Tile> tiles, int anchorTile)
+        public static bool StartConquering(Player player, List<Tile> tiles, int anchorTile)
         {
             CurrentPlayer = player;
             CurrentAnchorTile = anchorTile;
             CurrentTiles = tiles;
 
-            CurrentTiles[CurrentAnchorTile].Conquer(CurrentPlayer);
             // Right
             ConquerTilesInDirection(1);
             // Left
@@ -36,6 +36,18 @@ namespace Reversi
             ConquerTilesInDirection(-BoardSize + 1);
             // North west
             ConquerTilesInDirection(-BoardSize - 1);
+
+            if (ConqueredAnyTile)
+            {
+                CurrentTiles[CurrentAnchorTile].Conquer(CurrentPlayer);
+                ConqueredAnyTile = false;
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         private static bool IsValidTile(int index)
@@ -43,19 +55,18 @@ namespace Reversi
             return index > 0 && index < Math.Pow(BoardSize, 2);
         }
 
-        private static void ConquerTilesInDirection(int increment)
+        private static List<Tile> FindOpposingTiles(int startIndex, int offset)
         {
-            int index = CurrentAnchorTile;
             List<Tile> opponentTiles = new List<Tile>();
             bool encounteredBlankTile = false, encounteredAllyTile = false;
             do
             {
-                index += increment;
-                if (!IsValidTile(index))
+                startIndex += offset;
+                if (!IsValidTile(startIndex))
                 {
                     break;
                 }
-                var tile = CurrentTiles[index];
+                var tile = CurrentTiles[startIndex];
                 if (!tile.Conquered)
                 {
                     encounteredBlankTile = true;
@@ -67,13 +78,27 @@ namespace Reversi
                     break;
                 }
 
-                opponentTiles.Add(CurrentTiles[index]);
-            } while (index % BoardSize != 0);
+                opponentTiles.Add(CurrentTiles[startIndex]);
+            } while (startIndex % BoardSize != 0);
 
             if (encounteredBlankTile || !encounteredAllyTile)
             {
+                return null;
+            }
+
+            return opponentTiles;
+        }
+
+        private static void ConquerTilesInDirection(int offset)
+        {
+            List<Tile> opponentTiles = FindOpposingTiles(CurrentAnchorTile, offset);
+
+            if (opponentTiles == null)
+            {
                 return;
             }
+
+            ConqueredAnyTile = true;
             foreach (Tile opponentTile in opponentTiles)
             {
                 opponentTile.Conquer(CurrentPlayer);

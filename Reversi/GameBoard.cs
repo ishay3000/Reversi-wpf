@@ -30,12 +30,19 @@ namespace Reversi
                     GameTiles.Add(new Tile($"{i}:{j}"));
                 }
             }
+
+            int middleOfBoard = GameTiles.Count / 2;
+            int middleOfBoardRow = BoardSize / 2;
+            GameTiles[middleOfBoard - middleOfBoardRow].Conquer(ReversiGame.Players[1]);
+            GameTiles[middleOfBoard + middleOfBoardRow - 1].Conquer(ReversiGame.Players[1]);
+            GameTiles[middleOfBoard + middleOfBoardRow].Conquer(ReversiGame.Players[0]);
+            GameTiles[middleOfBoard - middleOfBoardRow - 1].Conquer(ReversiGame.Players[0]);
         }
 
-        public void ConquerTile(Player player, int row, int col)
+        public bool ConquerTile(Player player, int row, int col)
         {
             var anchorTile = (BoardSize * row) + col;
-            ReversiGameStrategy.StartConquering(player, GameTiles, anchorTile);
+            return ReversiGameStrategy.StartConquering(player, GameTiles, anchorTile);
         }
     }
 }

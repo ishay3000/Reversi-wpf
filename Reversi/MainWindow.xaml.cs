@@ -24,7 +24,7 @@ namespace Reversi
         {
             InitializeComponent();
 
-            int boardSize = 6;
+            int boardSize = 8;
             ReversiGame.InitializeGame(boardSize);
 
             DataContext = ReversiGame.GameBoard;
@@ -32,11 +32,15 @@ namespace Reversi
 
         private void TileButton_Click(object sender, RoutedEventArgs e)
         {
-            var btn = sender as Button;
-            var coordination = btn.Tag.ToString().Split(':');
-            int row = Convert.ToInt32(coordination[0]), col = Convert.ToInt32(coordination[1]);
+            var btn = (Button) sender;
+            
+                var coordination = btn.Tag.ToString().Split(':');
+                int row = Convert.ToInt32(coordination[0]), col = Convert.ToInt32(coordination[1]);
 
-            ReversiGame.MakeMove(row, col);
+                if (!ReversiGame.MakeMove(row, col))
+                {
+                    MessageBox.Show("Invalid move! Pick a different tile.");
+                }
         }
     }
 }

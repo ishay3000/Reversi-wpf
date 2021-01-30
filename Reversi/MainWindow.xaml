@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Reversi"
         mc:Ignorable="d"
-        Title="Reversi" Height="370" Width="365"
+        Title="Reversi" Height="480" Width="480"
         WindowStartupLocation="CenterScreen">
     <Grid x:Name="BoardGrid">
         <StackPanel>
@@ -20,7 +20,7 @@
                     <DataTemplate>
                         <Button Tag="{Binding Tag}" Background="{Binding Brush, Mode=TwoWay}"
                                 Click="TileButton_Click"
-                                Height="40" Width="50" Margin="4" />
+                                Height="50" Width="50" Margin="4" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl></StackPanel>

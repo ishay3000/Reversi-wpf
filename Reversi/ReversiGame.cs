@@ -16,16 +16,21 @@ namespace Reversi
         public static void InitializeGame(int boardSize)
         {
             BoardSize = boardSize;
-            GameBoard = new GameBoard(boardSize);
             Players = new List<Player>(playersCount);
             Players.Add(new Player(Brushes.Blue, 0));
             Players.Add(new Player(Brushes.Red, 1));
+            GameBoard = new GameBoard(boardSize);
+            
         }
 
-        public static void MakeMove(int row, int column)
+        public static bool MakeMove(int row, int column)
         {
-            GameBoard.ConquerTile(Players[currentPlayerTurn], row, column);
+            if (!GameBoard.ConquerTile(Players[currentPlayerTurn], row, column))
+            {
+                return false;
+            }
             currentPlayerTurn = playersCount - currentPlayerTurn - 1;
+            return true;
         }
     }
 }
