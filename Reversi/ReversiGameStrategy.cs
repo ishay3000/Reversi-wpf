@@ -47,7 +47,7 @@ namespace Reversi
         {
             int index = CurrentAnchorTile;
             List<Tile> opponentTiles = new List<Tile>();
-            bool encounteredBlankTile = false;
+            bool encounteredBlankTile = false, encounteredAllyTile = false;
             do
             {
                 index += increment;
@@ -63,13 +63,14 @@ namespace Reversi
                 }
                 if (tile.OccupyingPlayer.PlayerID == CurrentPlayer.PlayerID)
                 {
+                    encounteredAllyTile = true;
                     break;
                 }
 
                 opponentTiles.Add(CurrentTiles[index]);
             } while (index % BoardSize != 0);
 
-            if (encounteredBlankTile)
+            if (encounteredBlankTile || !encounteredAllyTile)
             {
                 return;
             }
