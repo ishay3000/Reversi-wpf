@@ -98,11 +98,15 @@ namespace Reversi
                 return;
             }
 
-            ConqueredAnyTile = true;
-            foreach (Tile opponentTile in opponentTiles)
+            if (opponentTiles.Count > 0)
             {
-                opponentTile.Conquer(CurrentPlayer);
+                ConqueredAnyTile = true;
+                foreach (Tile opponentTile in opponentTiles)
+                {
+                    opponentTile.Conquer(CurrentPlayer);
+                }
             }
+            
         }
     }
 }
