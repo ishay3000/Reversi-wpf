@@ -13,15 +13,15 @@ namespace Reversi
         public List<Tile> GameTiles { get; }
         public int BoardSize { get; }
 
-        public GameBoard(int boardSize)
+        public GameBoard(int boardSize, List<Player> players)
         {
             this.BoardSize = boardSize;
             ReversiGameStrategy.BoardSize = boardSize;
             GameTiles = new List<Tile>();
-            InitializeTiles();
+            InitializeTiles(players);
         }
 
-        private void InitializeTiles()
+        private void InitializeTiles(List<Player> players)
         {
             for (int i = 0; i < BoardSize; i++)
             {
@@ -33,10 +33,10 @@ namespace Reversi
 
             int middleOfBoard = GameTiles.Count / 2;
             int middleOfBoardRow = BoardSize / 2;
-            GameTiles[middleOfBoard - middleOfBoardRow].Conquer(ReversiGame.Players[1]);
-            GameTiles[middleOfBoard + middleOfBoardRow - 1].Conquer(ReversiGame.Players[1]);
-            GameTiles[middleOfBoard + middleOfBoardRow].Conquer(ReversiGame.Players[0]);
-            GameTiles[middleOfBoard - middleOfBoardRow - 1].Conquer(ReversiGame.Players[0]);
+            GameTiles[middleOfBoard - middleOfBoardRow].Conquer(players[1]);
+            GameTiles[middleOfBoard + middleOfBoardRow - 1].Conquer(players[1]);
+            GameTiles[middleOfBoard + middleOfBoardRow].Conquer(players[0]);
+            GameTiles[middleOfBoard - middleOfBoardRow - 1].Conquer(players[0]);
         }
 
         public bool ConquerTile(Player player, int row, int col)

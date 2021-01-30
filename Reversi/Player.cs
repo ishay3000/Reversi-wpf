@@ -5,12 +5,14 @@ namespace Reversi
     public class Player
     {
         public Brush PlayerColor { get; set; }
-        public int PlayerID { get; set; }
+        public int PlayerId { get; set; }
+        public string PlayerColorName { get; set; }
 
-        public Player(Brush playerColor, int playerId)
+        public Player(Brush playerColor, int playerId, string colorName)
         {
             PlayerColor = playerColor;
-            PlayerID = playerId;
+            PlayerId = playerId;
+            PlayerColorName = colorName;
         }
     }
 }

@@ -13,7 +13,6 @@ namespace Reversi
         private string _tag;
         private bool _conquered;
         private Player _occupyingPlayer;
-        public int Index { get; }
 
         public Player OccupyingPlayer
         {
@@ -61,7 +60,6 @@ namespace Reversi
             Brush = Brushes.Transparent;
             Tag = tag;
             var coordination = tag.Split(':');
-            Index = Convert.ToInt32(coordination[0]) * ReversiGame.BoardSize + Convert.ToInt32(coordination[1]);
         }
 
         public void Conquer(Player player)

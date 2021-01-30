@@ -72,7 +72,7 @@ namespace Reversi
                     encounteredBlankTile = true;
                     break;
                 }
-                if (tile.OccupyingPlayer.PlayerID == CurrentPlayer.PlayerID)
+                if (tile.OccupyingPlayer.PlayerId == CurrentPlayer.PlayerId)
                 {
                     encounteredAllyTile = true;
                     break;

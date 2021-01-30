@@ -5,31 +5,53 @@ using System.Windows.Media;
 
 namespace Reversi
 {
-    public static class ReversiGame
+    public class ReversiGame : BasePropertyChanged
     {
-        public static GameBoard GameBoard { get; set; }
-        public static List<Player> Players { get; set; }
-        public static int BoardSize;
-        private static int currentPlayerTurn;
-        private const int playersCount = 2;
+        public GameEntities GameEntities { get; set; }
+        public int BoardSize { get; }
 
-        public static void InitializeGame(int boardSize)
+        public string CurrentPlayerColor
         {
-            BoardSize = boardSize;
-            Players = new List<Player>(playersCount);
-            Players.Add(new Player(Brushes.Blue, 0));
-            Players.Add(new Player(Brushes.Red, 1));
-            GameBoard = new GameBoard(boardSize);
-            
+            get => GameEntities.Players[_currentPlayerTurn].PlayerColorName;
+            set
+            {
+                _currentPlayerColor = value;
+                OnPropertyChanged();
+            }
         }
 
-        public static bool MakeMove(int row, int column)
+        public int CurrentPlayerTurn
         {
-            if (!GameBoard.ConquerTile(Players[currentPlayerTurn], row, column))
+            get => _currentPlayerTurn;
+            private set
+            {
+                _currentPlayerTurn = value;
+                CurrentPlayerColor = CurrentPlayerColor;
+            }
+        }
+
+        private int PlayersCount = 2;
+        private int _currentPlayerTurn;
+        private string _currentPlayerColor;
+
+        public ReversiGame(int boardSize)
+        {
+            BoardSize = boardSize;
+            InitializeGame();
+        }
+        public void InitializeGame()
+        {
+            GameEntities = new GameEntities(BoardSize);
+            CurrentPlayerTurn = GameEntities.Players[0].PlayerId;
+        }
+
+        public bool MakeMove(int row, int column)
+        {
+            if (!GameEntities.GameBoard.ConquerTile(GameEntities.Players[CurrentPlayerTurn], row, column))
             {
                 return false;
             }
-            currentPlayerTurn = playersCount - currentPlayerTurn - 1;
+            CurrentPlayerTurn = PlayersCount - CurrentPlayerTurn - 1;
             return true;
         }
     }
