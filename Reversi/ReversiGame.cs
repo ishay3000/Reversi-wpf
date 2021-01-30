@@ -38,11 +38,32 @@
         {
             GameEntities = new GameEntities(BoardSize);
             CurrentPlayerTurn = GameEntities.Players[0].PlayerId;
+            ReversiGameStrategy.InitializeStrategy(GameEntities.GameBoard.GameTiles, BoardSize);
+        }
+
+        public bool IsGameOver()
+        {
+            if (ReversiGameStrategy.PlayerHasMovesLeft(GameEntities.Players[0]) &&
+                ReversiGameStrategy.PlayerHasMovesLeft(GameEntities.Players[1]))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public void FinalizeGame()
+        {
+            // TODO: Check which player won/draw, and announce it.
         }
 
         public bool MakeMove(int row, int column)
         {
-            if (!GameEntities.GameBoard.ConquerTile(GameEntities.Players[CurrentPlayerTurn], row, column))
+            if (IsGameOver())
+            {
+                FinalizeGame();
+            }
+            else if (!GameEntities.GameBoard.ConquerTile(GameEntities.Players[CurrentPlayerTurn], row, column))
             {
                 return false;
             }

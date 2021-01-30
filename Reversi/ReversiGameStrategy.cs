@@ -5,40 +5,51 @@ namespace Reversi
 {
     public static class ReversiGameStrategy
     {
-        public static int BoardSize { get; set; }
-        private static int CurrentAnchorTile { get; set; }
-        private static List<Tile> CurrentTiles { get; set; }
-        private static Player CurrentPlayer { get; set; }
-        private static bool ConqueredAnyTile { get; set; } = false;
+        private static int BoardSize;
+        private static int CurrentAnchorTile;
+        public static List<Tile> GameTiles;
+        private static Player CurrentPlayer;
+        private static bool ConqueredAnyTile = false;
+        private static int _right,
+            _left,
+            _down,
+            _up,
+            _southWest,
+            _southEast,
+            _northEast,
+            _northWest;
 
+        public static void InitializeStrategy(List<Tile> tiles, int boardSize)
+        {
+            GameTiles = tiles;
+            BoardSize = boardSize;
+            _right = 1;
+            _left = -1;
+            _down = BoardSize;
+            _up = -BoardSize;
+            _southWest = BoardSize - 1;
+            _southEast = BoardSize + 1;
+            _northEast = -BoardSize + 1;
+            _northWest = -BoardSize - 1;
+        }
 
-        public static bool StartConquering(Player player, List<Tile> tiles, int anchorTile)
+        public static bool StartConquering(Player player, int conqueringTile)
         {
             CurrentPlayer = player;
-            CurrentAnchorTile = anchorTile;
-            CurrentTiles = tiles;
+            CurrentAnchorTile = conqueringTile;
 
-            int right = 1,
-                left = -1,
-                down = BoardSize,
-                up = -BoardSize,
-                southWest = BoardSize - 1,
-                southEast = BoardSize + 1,
-                northEast = -BoardSize + 1,
-                northWest = -BoardSize - 1;
-
-            ConquerTilesInDirection(right);
-            ConquerTilesInDirection(left);
-            ConquerTilesInDirection(down);
-            ConquerTilesInDirection(up);
-            ConquerTilesInDirection(southWest);
-            ConquerTilesInDirection(southEast);
-            ConquerTilesInDirection(northWest);
-            ConquerTilesInDirection(northEast);
+            ConquerTilesInDirection(_right);
+            ConquerTilesInDirection(_left);
+            ConquerTilesInDirection(_down);
+            ConquerTilesInDirection(_up);
+            ConquerTilesInDirection(_southWest);
+            ConquerTilesInDirection(_southEast);
+            ConquerTilesInDirection(_northWest);
+            ConquerTilesInDirection(_northEast);
 
             if (ConqueredAnyTile)
             {
-                CurrentTiles[CurrentAnchorTile].Conquer(CurrentPlayer);
+                GameTiles[CurrentAnchorTile].Conquer(CurrentPlayer);
                 ConqueredAnyTile = false;
 
                 return true;
@@ -51,7 +62,7 @@ namespace Reversi
 
         private static bool IsValidTile(int index)
         {
-            return index > 0 && index < Math.Pow(BoardSize, 2);
+            return index > 0 && index < GameTiles.Count;
         }
 
         private static List<Tile> FindOpposingTiles(int startIndex, int offset)
@@ -65,7 +76,7 @@ namespace Reversi
                 {
                     break;
                 }
-                var tile = CurrentTiles[startIndex];
+                var tile = GameTiles[startIndex];
                 if (!tile.Conquered)
                 {
                     encounteredBlankTile = true;
@@ -77,7 +88,7 @@ namespace Reversi
                     break;
                 }
 
-                opponentTiles.Add(CurrentTiles[startIndex]);
+                opponentTiles.Add(GameTiles[startIndex]);
             } while (startIndex % BoardSize != 0);
 
             if (encounteredBlankTile || !encounteredAllyTile)
@@ -105,7 +116,12 @@ namespace Reversi
                     opponentTile.Conquer(CurrentPlayer);
                 }
             }
-            
+
+        }
+
+        public static bool PlayerHasMovesLeft(Player player)
+        {
+            return false;
         }
     }
 }

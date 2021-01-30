@@ -10,7 +10,6 @@ namespace Reversi
         public GameBoard(int boardSize, List<Player> players)
         {
             this.BoardSize = boardSize;
-            ReversiGameStrategy.BoardSize = boardSize;
             GameTiles = new List<Tile>();
             InitializeTiles(players);
         }
@@ -36,7 +35,7 @@ namespace Reversi
         public bool ConquerTile(Player player, int row, int col)
         {
             var anchorTile = (BoardSize * row) + col;
-            return ReversiGameStrategy.StartConquering(player, GameTiles, anchorTile);
+            return ReversiGameStrategy.StartConquering(player, anchorTile);
         }
     }
 }

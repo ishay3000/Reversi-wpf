@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Reversi"
         mc:Ignorable="d"
-        Title="Reversi" Height="480" Width="480"
+        Title="Reversi" Height="520" Width="480"
         WindowStartupLocation="CenterScreen">
     <Grid x:Name="BoardGrid">
         <StackPanel>
