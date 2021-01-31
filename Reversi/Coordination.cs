@@ -11,6 +11,12 @@
             Column = column;
         }
 
+        public Coordination(Coordination coordination)
+        {
+            Row = coordination.Row;
+            Column = coordination.Column;
+        }
+
         public void AddPoint(Coordination coordination)
         {
             Row += coordination.Row;

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Reversi
 {
@@ -25,12 +26,14 @@ namespace Reversi
                 }
             }
 
-            // int middleOfBoard = GameTiles.Count / 2;
-            // int middleOfBoardRow = BoardSize / 2;
-            // GameTiles[middleOfBoard - middleOfBoardRow].Conquer(players[1]);
-            // GameTiles[middleOfBoard + middleOfBoardRow - 1].Conquer(players[1]);
-            // GameTiles[middleOfBoard + middleOfBoardRow].Conquer(players[0]);
-            // GameTiles[middleOfBoard - middleOfBoardRow - 1].Conquer(players[0]);
+            // Generic board size middle indexes.
+            int middleLeft = (int)Math.Floor((double) (BoardSize - 1) / 2);
+            int middleRight = (int)Math.Floor((double) BoardSize / 2);
+
+            GameTiles[middleLeft][middleLeft].Conquer(players[0]);
+            GameTiles[middleLeft][middleRight].Conquer(players[1]);
+            GameTiles[middleRight][middleRight].Conquer(players[0]);
+            GameTiles[middleRight][middleLeft].Conquer(players[1]);
         }
 
         public bool ConquerTile(Player player, Tile tile)

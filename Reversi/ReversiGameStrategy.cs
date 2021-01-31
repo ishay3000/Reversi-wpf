@@ -64,7 +64,7 @@ namespace Reversi
         private static void FindOpponentTiles(Coordination offset, Player attackerPlayer)
         {
             List<Tile> opponentTiles = new List<Tile>();
-            Coordination startCoordination = _currentAnchorTile.Coordination;
+            Coordination startCoordination = new Coordination(_currentAnchorTile.Coordination);
             bool encounteredBlankTile = false, encounteredAllyTile = false;
             do
             {
@@ -102,26 +102,27 @@ namespace Reversi
 
         public static bool PlayerHasMovesLeft(Player player)
         {
-            /*for (int i = 0; i < GameTiles.Count; i++)
+            for (int i = 0; i < _boardSize; i++)
             {
-                if (GameTiles[i].Conquered)
+                for (int j = 0; j < _boardSize; j++)
                 {
-                    continue;
-                }
-
-                _currentAnchorTile = i;
-                foreach (KeyValuePair<string, int> direction in _directionsDictionary)
-                {
-                    FindOpponentTiles(direction.Value, attackerPlayer);
-                    if (_opponentTiles.Count > 0)
+                    if (GameTiles[i][j].Conquered)
                     {
-                        _opponentTiles.Clear();
-                        return true;
+                        continue;
+                    }
+
+                    foreach (KeyValuePair<string, Coordination> direction in _directionsDictionary)
+                    {
+                        FindOpponentTiles(direction.Value, player);
+                        if (_opponentTiles.Count > 0)
+                        {
+                            _opponentTiles.Clear();
+                            return true;
+                        }
                     }
                 }
             }
 
-            return false;*/
             return false;
         }
     }
