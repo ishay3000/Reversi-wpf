@@ -3,30 +3,42 @@ using System.Collections.Generic;
 
 namespace Reversi
 {
+    class Offset
+    {
+        public int Row { get; set; }
+        public int Column { get; set; }
+
+        public Offset(int row, int column)
+        {
+            Row = row;
+            Column = column;
+        }
+    }
+
     public static class ReversiGameStrategy
     {
         private static int _boardSize;
         private static int _currentAnchorTile;
-        public static List<Tile> GameTiles;
+        public static List<List<Tile>> GameTiles;
         private static List<Tile> _opponentTiles;
-        private static Dictionary<string, int> _directionsDictionary;
+        private static Dictionary<string, Offset> _directionsDictionary;
 
 
-        public static void InitializeStrategy(List<Tile> tiles, int boardSize)
+        public static void InitializeStrategy(List<List<Tile>> tiles, int boardSize)
         {
             GameTiles = tiles;
             _opponentTiles = new List<Tile>();
             _boardSize = boardSize;
-            _directionsDictionary = new Dictionary<string, int>()
+            _directionsDictionary = new Dictionary<string, Offset>()
             {
-                {"right", 1},
-                {"left", -1},
-                {"up", -boardSize},
-                {"down", boardSize},
-                {"south west", boardSize - 1},
-                {"south east", boardSize + 1},
-                {"north west", -boardSize - 1},
-                {"north east", -boardSize + 1}
+                {"right", new Offset(0, 1)},
+                {"left", new Offset(0, -1)},
+                {"up", new Offset(-1, 0)},
+                {"down", new Offset(1, 0)},
+                {"south west", new Offset(1, -1)},
+                {"south east", new Offset(1, 1)},
+                {"north west", new Offset(-1, -1)},
+                {"north east", new Offset(-1, 1)}
             };
         }
 
@@ -34,26 +46,27 @@ namespace Reversi
         {
             _currentAnchorTile = conqueringTile;
 
-            foreach (KeyValuePair<string, int> direction in _directionsDictionary)
+            foreach (KeyValuePair<string, Offset> direction in _directionsDictionary)
             {
-                FindOpponentTiles(direction.Value, player);
+                // FindOpponentTiles(direction.Value, player);
             }
 
-            if (_opponentTiles.Count > 0)
-            {
-                GameTiles[_currentAnchorTile].Conquer(player);
-                foreach (Tile opponentTile in _opponentTiles)
-                {
-                    opponentTile.Conquer(player);
-                }
-                _opponentTiles.Clear();
-
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            // if (_opponentTiles.Count > 0)
+            // {
+            //     GameTiles[_currentAnchorTile].Conquer(player);
+            //     foreach (Tile opponentTile in _opponentTiles)
+            //     {
+            //         opponentTile.Conquer(player);
+            //     }
+            //     _opponentTiles.Clear();
+            //
+            //     return true;
+            // }
+            // else
+            // {
+            //     return false;
+            // }
+            return false;
         }
 
         private static bool IsValidTile(int index)
@@ -63,7 +76,7 @@ namespace Reversi
 
         private static void FindOpponentTiles(int offset, Player player)
         {
-            List<Tile> opponentTiles = new List<Tile>();
+            /*List<Tile> opponentTiles = new List<Tile>();
             int startIndex = _currentAnchorTile;
             bool encounteredBlankTile = false, encounteredAllyTile = false;
             do
@@ -96,12 +109,12 @@ namespace Reversi
             foreach (Tile opponentTile in opponentTiles)
             {
                 _opponentTiles.Add(opponentTile);
-            }
+            }*/
         }
 
         public static bool PlayerHasMovesLeft(Player player)
         {
-            for (int i = 0; i < GameTiles.Count; i++)
+            /*for (int i = 0; i < GameTiles.Count; i++)
             {
                 if (GameTiles[i].Conquered)
                 {
@@ -120,6 +133,7 @@ namespace Reversi
                 }
             }
 
+            return false;*/
             return false;
         }
     }

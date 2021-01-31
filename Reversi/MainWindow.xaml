@@ -31,23 +31,8 @@
             <TextBlock Text="{Binding CurrentPlayerColor, StringFormat={}Current player: {0}}"
                        HorizontalAlignment="Center" />
 
-            <ItemsControl x:Name="GameBoard" ItemTemplate="{DynamicResource DataTemplate_Level1}" ItemsSource="{Binding GameEntities.GameBoard.GameTiles}"/>
-
-            <!--<ItemsControl ItemsSource="{Binding GameEntities.GameBoard.GameTiles}"
-                          HorizontalAlignment="Left" VerticalAlignment="Top">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <UniformGrid Columns="{Binding BoardSize}" />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Button Tag="{Binding Tag}" Background="{Binding Brush, Mode=TwoWay}"
-                                Click="TileButton_Click"
-                                Height="50" Width="50" Margin="4" />
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>-->
+            <ItemsControl x:Name="GameBoard" ItemTemplate="{DynamicResource DataTemplate_Level1}"
+                          ItemsSource="{Binding GameEntities.GameBoard.GameTiles}" />
         </StackPanel>
     </Grid>
 </Window>
