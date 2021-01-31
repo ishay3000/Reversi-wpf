@@ -21,7 +21,7 @@ namespace Reversi
                 GameTiles.Add(new List<Tile>());
                 for (int j = 0; j < BoardSize; j++)
                 {
-                    GameTiles[i].Add(new Tile(new Point(i, j)));
+                    GameTiles[i].Add(new Tile(new Coordination(i, j)));
                 }
             }
 

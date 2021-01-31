@@ -10,7 +10,7 @@
 
     <Window.Resources>
         <DataTemplate x:Key="DataTemplate_Level2">
-            <Button Tag="{Binding Point}" Background="{Binding Brush, Mode=TwoWay}"
+            <Button Tag="{Binding Tag}" Background="{Binding Brush, Mode=TwoWay}"
                     Click="TileButton_Click"
                     Height="50" Width="50" Margin="4" />
         </DataTemplate>

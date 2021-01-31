@@ -36,7 +36,7 @@ namespace Reversi
         {
             GameEntities = new GameEntities(BoardSize);
             CurrentPlayerTurn = GameEntities.Players[0].PlayerId;
-            // ReversiGameStrategy.InitializeStrategy(GameEntities.GameBoard.GameTiles, BoardSize);
+            ReversiGameStrategy.InitializeStrategy(GameEntities.GameBoard.GameTiles, BoardSize);
         }
 
         public bool IsGameOver()

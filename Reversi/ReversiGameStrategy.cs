@@ -3,17 +3,6 @@ using System.Collections.Generic;
 
 namespace Reversi
 {
-    class Offset
-    {
-        public int Row { get; set; }
-        public int Column { get; set; }
-
-        public Offset(int row, int column)
-        {
-            Row = row;
-            Column = column;
-        }
-    }
 
     public static class ReversiGameStrategy
     {
@@ -21,7 +10,7 @@ namespace Reversi
         private static Tile _currentAnchorTile;
         public static List<List<Tile>> GameTiles;
         private static List<Tile> _opponentTiles;
-        private static Dictionary<string, Offset> _directionsDictionary;
+        private static Dictionary<string, Coordination> _directionsDictionary;
 
 
         public static void InitializeStrategy(List<List<Tile>> tiles, int boardSize)
@@ -29,16 +18,16 @@ namespace Reversi
             GameTiles = tiles;
             _opponentTiles = new List<Tile>();
             _boardSize = boardSize;
-            _directionsDictionary = new Dictionary<string, Offset>()
+            _directionsDictionary = new Dictionary<string, Coordination>()
             {
-                {"right", new Offset(0, 1)},
-                {"left", new Offset(0, -1)},
-                {"up", new Offset(-1, 0)},
-                {"down", new Offset(1, 0)},
-                {"south west", new Offset(1, -1)},
-                {"south east", new Offset(1, 1)},
-                {"north west", new Offset(-1, -1)},
-                {"north east", new Offset(-1, 1)}
+                {"right", new Coordination(0, 1)},
+                {"left", new Coordination(0, -1)},
+                {"up", new Coordination(-1, 0)},
+                {"down", new Coordination(1, 0)},
+                {"south west", new Coordination(1, -1)},
+                {"south east", new Coordination(1, 1)},
+                {"north west", new Coordination(-1, -1)},
+                {"north east", new Coordination(-1, 1)}
             };
         }
 
@@ -46,60 +35,59 @@ namespace Reversi
         {
             _currentAnchorTile = tile;
 
-            foreach (KeyValuePair<string, Offset> direction in _directionsDictionary)
+            foreach (KeyValuePair<string, Coordination> direction in _directionsDictionary)
             {
-                // FindOpponentTiles(direction.Value, player);
+                FindOpponentTiles(direction.Value, player);
             }
 
-            // if (_opponentTiles.Count > 0)
-            // {
-            //     GameTiles[_currentAnchorTile].Conquer(player);
-            //     foreach (Tile opponentTile in _opponentTiles)
-            //     {
-            //         opponentTile.Conquer(player);
-            //     }
-            //     _opponentTiles.Clear();
-            //
-            //     return true;
-            // }
-            // else
-            // {
-            //     return false;
-            // }
+            if (_opponentTiles.Count > 0)
+            {
+                tile.Conquer(player);
+                foreach (Tile opponentTile in _opponentTiles)
+                {
+                    opponentTile.Conquer(player);
+                }
+                _opponentTiles.Clear();
+            
+                return true;
+            }
+
             return false;
         }
 
-        private static bool IsValidTile(int index)
+        private static bool IsValidTile(Coordination coordination)
         {
-            return index > 0 && index < GameTiles.Count;
+            int row = coordination.Row, column = coordination.Column;
+            return row > 0 && row < _boardSize && column > 0 && column < _boardSize;
         }
 
-        private static void FindOpponentTiles(Offset offset, Player player)
+        private static void FindOpponentTiles(Coordination offset, Player attackerPlayer)
         {
-            /*List<Tile> opponentTiles = new List<Tile>();
-            int startIndex = _currentAnchorTile;
+            List<Tile> opponentTiles = new List<Tile>();
+            Coordination startCoordination = _currentAnchorTile.Coordination;
             bool encounteredBlankTile = false, encounteredAllyTile = false;
             do
             {
-                startIndex += offset;
-                if (!IsValidTile(startIndex))
+                startCoordination.AddPoint(offset);
+                if (!IsValidTile(startCoordination))
                 {
                     break;
                 }
-                var tile = GameTiles[startIndex];
+
+                var tile = GameTiles[startCoordination.Row][startCoordination.Column];
                 if (!tile.Conquered)
                 {
                     encounteredBlankTile = true;
                     break;
                 }
-                if (tile.OccupyingPlayer.PlayerId == player.PlayerId)
+                if (tile.OccupyingPlayer.PlayerId == attackerPlayer.PlayerId)
                 {
                     encounteredAllyTile = true;
                     break;
                 }
-
-                opponentTiles.Add(GameTiles[startIndex]);
-            } while (startIndex % _boardSize != 0);
+            
+                opponentTiles.Add(tile);
+            } while (true);
 
             if (encounteredBlankTile || !encounteredAllyTile)
             {
@@ -109,7 +97,7 @@ namespace Reversi
             foreach (Tile opponentTile in opponentTiles)
             {
                 _opponentTiles.Add(opponentTile);
-            }*/
+            }
         }
 
         public static bool PlayerHasMovesLeft(Player player)
@@ -124,7 +112,7 @@ namespace Reversi
                 _currentAnchorTile = i;
                 foreach (KeyValuePair<string, int> direction in _directionsDictionary)
                 {
-                    FindOpponentTiles(direction.Value, player);
+                    FindOpponentTiles(direction.Value, attackerPlayer);
                     if (_opponentTiles.Count > 0)
                     {
                         _opponentTiles.Clear();

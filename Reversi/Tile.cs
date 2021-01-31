@@ -7,7 +7,7 @@ namespace Reversi
         private Brush _brush;
         private bool _conquered;
         private Player _occupyingPlayer;
-        private Point _point;
+        private Coordination _coordination;
         private int _playersCount = 2;
         private int _currentPlayerTurn;
         private string _currentPlayerColor;
@@ -34,11 +34,19 @@ namespace Reversi
             }
         }
 
-        public string Point
+        public Coordination Coordination
         {
             get
             {
-                return _point.X.ToString() + ":" + _point.Y.ToString();
+                return _coordination;
+            }
+        }
+
+        public string Tag
+        {
+            get
+            {
+                return _coordination.Row.ToString() + ":" + _coordination.Column.ToString();
             }
         }
 
@@ -52,10 +60,10 @@ namespace Reversi
             }
         }
 
-        public Tile(Point point)
+        public Tile(Coordination coordination)
         {
             Brush = Brushes.Transparent;
-            _point = point;
+            _coordination = coordination;
         }
 
         public void Conquer(Player player)

@@ -62,7 +62,7 @@
     <Compile Include="GameBoard.cs" />
     <Compile Include="GameEntities.cs" />
     <Compile Include="Player.cs" />
-    <Compile Include="Point.cs" />
+    <Compile Include="Coordination.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="ReversiGame.cs" />
     <Compile Include="ReversiGameStrategy.cs" />
