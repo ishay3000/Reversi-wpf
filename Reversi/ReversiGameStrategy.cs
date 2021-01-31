@@ -58,7 +58,7 @@ namespace Reversi
         private static bool IsValidTile(Coordination coordination)
         {
             int row = coordination.Row, column = coordination.Column;
-            return row > 0 && row < _boardSize && column > 0 && column < _boardSize;
+            return row >= 0 && row < _boardSize && column >= 0 && column < _boardSize;
         }
 
         private static void FindOpponentTiles(Coordination offset, Player attackerPlayer)
@@ -113,6 +113,7 @@ namespace Reversi
 
                     foreach (KeyValuePair<string, Coordination> direction in _directionsDictionary)
                     {
+                        _currentAnchorTile = GameTiles[i][j];
                         FindOpponentTiles(direction.Value, player);
                         if (_opponentTiles.Count > 0)
                         {
