@@ -18,7 +18,7 @@ namespace Reversi
     public static class ReversiGameStrategy
     {
         private static int _boardSize;
-        private static int _currentAnchorTile;
+        private static Tile _currentAnchorTile;
         public static List<List<Tile>> GameTiles;
         private static List<Tile> _opponentTiles;
         private static Dictionary<string, Offset> _directionsDictionary;
@@ -42,9 +42,9 @@ namespace Reversi
             };
         }
 
-        public static bool StartConquering(Player player, int conqueringTile)
+        public static bool StartConquering(Player player, Tile tile)
         {
-            _currentAnchorTile = conqueringTile;
+            _currentAnchorTile = tile;
 
             foreach (KeyValuePair<string, Offset> direction in _directionsDictionary)
             {
@@ -74,7 +74,7 @@ namespace Reversi
             return index > 0 && index < GameTiles.Count;
         }
 
-        private static void FindOpponentTiles(int offset, Player player)
+        private static void FindOpponentTiles(Offset offset, Player player)
         {
             /*List<Tile> opponentTiles = new List<Tile>();
             int startIndex = _currentAnchorTile;

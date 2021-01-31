@@ -21,7 +21,7 @@ namespace Reversi
                 GameTiles.Add(new List<Tile>());
                 for (int j = 0; j < BoardSize; j++)
                 {
-                    GameTiles[i].Add(new Tile($"{i}:{j}"));
+                    GameTiles[i].Add(new Tile(new Point(i, j)));
                 }
             }
 
@@ -33,10 +33,9 @@ namespace Reversi
             // GameTiles[middleOfBoard - middleOfBoardRow - 1].Conquer(players[0]);
         }
 
-        public bool ConquerTile(Player player, int row, int col)
+        public bool ConquerTile(Player player, Tile tile)
         {
-            var anchorTile = (BoardSize * row) + col;
-            return ReversiGameStrategy.StartConquering(player, anchorTile);
+            return ReversiGameStrategy.StartConquering(player, tile);
         }
     }
 }

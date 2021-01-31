@@ -84,7 +84,7 @@ namespace Reversi
             // {
             //     // FinalizeGame();
             // }
-            if (!GameEntities.GameBoard.ConquerTile(GameEntities.Players[CurrentPlayerTurn], row, column))
+            if (!GameEntities.GameBoard.ConquerTile(GameEntities.Players[CurrentPlayerTurn], GameEntities.GameBoard.GameTiles[row][column]))
             {
                 return false;
             }

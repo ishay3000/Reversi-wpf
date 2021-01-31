@@ -5,12 +5,14 @@ namespace Reversi
     public class Tile : BasePropertyChanged
     {
         private Brush _brush;
-        private string _tag;
         private bool _conquered;
         private Player _occupyingPlayer;
+        private Point _point;
         private int _playersCount = 2;
         private int _currentPlayerTurn;
         private string _currentPlayerColor;
+
+
         public Player OccupyingPlayer
         {
             get => _occupyingPlayer;
@@ -32,13 +34,11 @@ namespace Reversi
             }
         }
 
-        public string Tag
+        public string Point
         {
-            get => _tag;
-            set
+            get
             {
-                _tag = value;
-                OnPropertyChanged();
+                return _point.X.ToString() + ":" + _point.Y.ToString();
             }
         }
 
@@ -52,11 +52,10 @@ namespace Reversi
             }
         }
 
-        public Tile(string tag)
+        public Tile(Point point)
         {
             Brush = Brushes.Transparent;
-            Tag = tag;
-            var coordination = tag.Split(':');
+            _point = point;
         }
 
         public void Conquer(Player player)
