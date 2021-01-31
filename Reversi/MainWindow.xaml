@@ -7,12 +7,33 @@
         mc:Ignorable="d"
         Title="Reversi" Height="520" Width="480"
         WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <DataTemplate x:Key="DataTemplate_Level2">
+            <Button Tag="{Binding Tag}" Background="{Binding Brush, Mode=TwoWay}"
+                    Click="TileButton_Click"
+                    Height="50" Width="50" Margin="4" />
+        </DataTemplate>
+
+        <DataTemplate x:Key="DataTemplate_Level1">
+            <ItemsControl ItemsSource="{Binding}" ItemTemplate="{DynamicResource DataTemplate_Level2}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+        </DataTemplate>
+    </Window.Resources>
+
     <Grid x:Name="BoardGrid">
         <StackPanel>
             <TextBlock Text="{Binding CurrentPlayerColor, StringFormat={}Current player: {0}}"
                        HorizontalAlignment="Center" />
 
-            <ItemsControl ItemsSource="{Binding GameEntities.GameBoard.GameTiles}"
+            <ItemsControl x:Name="GameBoard" ItemTemplate="{DynamicResource DataTemplate_Level1}" ItemsSource="{Binding GameEntities.GameBoard.GameTiles}"/>
+
+            <!--<ItemsControl ItemsSource="{Binding GameEntities.GameBoard.GameTiles}"
                           HorizontalAlignment="Left" VerticalAlignment="Top">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -26,7 +47,7 @@
                                 Height="50" Width="50" Margin="4" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
-            </ItemsControl>
+            </ItemsControl>-->
         </StackPanel>
     </Grid>
 </Window>

@@ -36,7 +36,7 @@ namespace Reversi
         {
             GameEntities = new GameEntities(BoardSize);
             CurrentPlayerTurn = GameEntities.Players[0].PlayerId;
-            ReversiGameStrategy.InitializeStrategy(GameEntities.GameBoard.GameTiles, BoardSize);
+            // ReversiGameStrategy.InitializeStrategy(GameEntities.GameBoard.GameTiles, BoardSize);
         }
 
         public bool IsGameOver()
@@ -47,7 +47,7 @@ namespace Reversi
             return !(player1HasMoves && player2HasMoves);
         }
 
-        public void FinalizeGame()
+        /*public void FinalizeGame()
         {
             // TODO: Check which player won/draw, and announce it.
             int player1TilesCount = 0, player2TilesCount = 0;
@@ -76,15 +76,15 @@ namespace Reversi
                 winner = GameEntities.Players[1].PlayerColorName;
             }
             MessageBox.Show("Game Over! The winner is the " + winner + " player!");
-        }
+        }*/
 
         public bool MakeMove(int row, int column)
         {
-            if (IsGameOver())
-            {
-                FinalizeGame();
-            }
-            else if (!GameEntities.GameBoard.ConquerTile(GameEntities.Players[CurrentPlayerTurn], row, column))
+            // if (IsGameOver())
+            // {
+            //     // FinalizeGame();
+            // }
+            if (!GameEntities.GameBoard.ConquerTile(GameEntities.Players[CurrentPlayerTurn], row, column))
             {
                 return false;
             }
