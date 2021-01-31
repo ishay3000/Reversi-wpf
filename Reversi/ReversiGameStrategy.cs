@@ -3,90 +3,91 @@ using System.Collections.Generic;
 
 namespace Reversi
 {
+
     public static class ReversiGameStrategy
     {
         private static int _boardSize;
-        private static int _currentAnchorTile;
-        public static List<Tile> GameTiles;
+        private static Tile _currentAnchorTile;
+        public static List<List<Tile>> GameTiles;
         private static List<Tile> _opponentTiles;
-        private static Dictionary<string, int> _directionsDictionary;
+        private static Dictionary<string, Coordination> _directionsDictionary;
 
 
-        public static void InitializeStrategy(List<Tile> tiles, int boardSize)
+        public static void InitializeStrategy(List<List<Tile>> tiles, int boardSize)
         {
             GameTiles = tiles;
             _opponentTiles = new List<Tile>();
             _boardSize = boardSize;
-            _directionsDictionary = new Dictionary<string, int>()
+            _directionsDictionary = new Dictionary<string, Coordination>()
             {
-                {"right", 1},
-                {"left", -1},
-                {"up", -boardSize},
-                {"down", boardSize},
-                {"south west", boardSize - 1},
-                {"south east", boardSize + 1},
-                {"north west", -boardSize - 1},
-                {"north east", -boardSize + 1}
+                {"right", new Coordination(0, 1)},
+                {"left", new Coordination(0, -1)},
+                {"up", new Coordination(-1, 0)},
+                {"down", new Coordination(1, 0)},
+                {"south west", new Coordination(1, -1)},
+                {"south east", new Coordination(1, 1)},
+                {"north west", new Coordination(-1, -1)},
+                {"north east", new Coordination(-1, 1)}
             };
         }
 
-        public static bool StartConquering(Player player, int conqueringTile)
+        public static bool StartConquering(Player player, Tile tile)
         {
-            _currentAnchorTile = conqueringTile;
+            _currentAnchorTile = tile;
 
-            foreach (KeyValuePair<string, int> direction in _directionsDictionary)
+            foreach (KeyValuePair<string, Coordination> direction in _directionsDictionary)
             {
                 FindOpponentTiles(direction.Value, player);
             }
 
             if (_opponentTiles.Count > 0)
             {
-                GameTiles[_currentAnchorTile].Conquer(player);
+                tile.Conquer(player);
                 foreach (Tile opponentTile in _opponentTiles)
                 {
                     opponentTile.Conquer(player);
                 }
                 _opponentTiles.Clear();
-
+            
                 return true;
             }
-            else
-            {
-                return false;
-            }
+
+            return false;
         }
 
-        private static bool IsValidTile(int index)
+        private static bool IsValidTile(Coordination coordination)
         {
-            return index > 0 && index < GameTiles.Count;
+            int row = coordination.Row, column = coordination.Column;
+            return row >= 0 && row < _boardSize && column >= 0 && column < _boardSize;
         }
 
-        private static void FindOpponentTiles(int offset, Player player)
+        private static void FindOpponentTiles(Coordination offset, Player attackerPlayer)
         {
             List<Tile> opponentTiles = new List<Tile>();
-            int startIndex = _currentAnchorTile;
+            Coordination startCoordination = new Coordination(_currentAnchorTile.Coordination);
             bool encounteredBlankTile = false, encounteredAllyTile = false;
             do
             {
-                startIndex += offset;
-                if (!IsValidTile(startIndex))
+                startCoordination.AddPoint(offset);
+                if (!IsValidTile(startCoordination))
                 {
                     break;
                 }
-                var tile = GameTiles[startIndex];
+
+                var tile = GameTiles[startCoordination.Row][startCoordination.Column];
                 if (!tile.Conquered)
                 {
                     encounteredBlankTile = true;
                     break;
                 }
-                if (tile.OccupyingPlayer.PlayerId == player.PlayerId)
+                if (tile.OccupyingPlayer.PlayerId == attackerPlayer.PlayerId)
                 {
                     encounteredAllyTile = true;
                     break;
                 }
-
-                opponentTiles.Add(GameTiles[startIndex]);
-            } while (startIndex % _boardSize != 0);
+            
+                opponentTiles.Add(tile);
+            } while (true);
 
             if (encounteredBlankTile || !encounteredAllyTile)
             {
@@ -101,21 +102,24 @@ namespace Reversi
 
         public static bool PlayerHasMovesLeft(Player player)
         {
-            for (int i = 0; i < GameTiles.Count; i++)
+            for (int i = 0; i < _boardSize; i++)
             {
-                if (GameTiles[i].Conquered)
+                for (int j = 0; j < _boardSize; j++)
                 {
-                    continue;
-                }
-
-                _currentAnchorTile = i;
-                foreach (KeyValuePair<string, int> direction in _directionsDictionary)
-                {
-                    FindOpponentTiles(direction.Value, player);
-                    if (_opponentTiles.Count > 0)
+                    if (GameTiles[i][j].Conquered)
                     {
-                        _opponentTiles.Clear();
-                        return true;
+                        continue;
+                    }
+
+                    foreach (KeyValuePair<string, Coordination> direction in _directionsDictionary)
+                    {
+                        _currentAnchorTile = GameTiles[i][j];
+                        FindOpponentTiles(direction.Value, player);
+                        if (_opponentTiles.Count > 0)
+                        {
+                            _opponentTiles.Clear();
+                            return true;
+                        }
                     }
                 }
             }
