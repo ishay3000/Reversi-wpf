@@ -8,9 +8,6 @@ namespace Reversi
         private bool _conquered;
         private Player _occupyingPlayer;
         private Coordination _coordination;
-        private int _playersCount = 2;
-        private int _currentPlayerTurn;
-        private string _currentPlayerColor;
 
 
         public Player OccupyingPlayer

@@ -6,7 +6,6 @@ namespace Reversi
     {
         public GameEntities GameEntities { get; set; }
         public int BoardSize { get; }
-        private bool player1HasMoves = false, player2HasMoves = false;
         private int _playersCount = 2;
         private int _currentPlayerTurn;
 
@@ -39,12 +38,15 @@ namespace Reversi
             ReversiGameStrategy.InitializeStrategy(GameEntities.GameBoard.GameTiles, BoardSize);
         }
 
+        private bool CurrentPlayerCantMove()
+        {
+            return !ReversiGameStrategy.PlayerHasMovesLeft(GameEntities.Players[CurrentPlayerTurn]);
+        }
+
         public bool IsGameOver()
         {
-            player1HasMoves = ReversiGameStrategy.PlayerHasMovesLeft(GameEntities.Players[0]);
-            player2HasMoves = ReversiGameStrategy.PlayerHasMovesLeft(GameEntities.Players[1]);
-
-            return !(player1HasMoves && player2HasMoves);
+            return !ReversiGameStrategy.PlayerHasMovesLeft(GameEntities.Players[0]) &&
+                   !ReversiGameStrategy.PlayerHasMovesLeft(GameEntities.Players[1]);
         }
 
         public void FinalizeGame()
@@ -81,18 +83,29 @@ namespace Reversi
             MessageBox.Show("Game Over! The winner is the " + winner + " player!");
         }
 
-        public bool MakeMove(int row, int column)
+        public void MakeMove(int row, int column)
         {
             if (IsGameOver())
             {
                 FinalizeGame();
             }
-            if (!GameEntities.GameBoard.ConquerTile(GameEntities.Players[CurrentPlayerTurn], GameEntities.GameBoard.GameTiles[row][column]))
+            else if (CurrentPlayerCantMove())
             {
-                return false;
+                MessageBox.Show("Current player can't move. Switching to the other player.");
+                CurrentPlayerTurn = _playersCount - CurrentPlayerTurn - 1;
             }
-            CurrentPlayerTurn = _playersCount - CurrentPlayerTurn - 1;
-            return true;
+            else if (!GameEntities.GameBoard.ConquerTile(GameEntities.Players[CurrentPlayerTurn], GameEntities.GameBoard.GameTiles[row][column]))
+            {
+                MessageBox.Show("Invalid move! Pick a different tile.");
+            }
+            else
+            {
+                CurrentPlayerTurn = _playersCount - CurrentPlayerTurn - 1;
+                if (IsGameOver())
+                {
+                    FinalizeGame();
+                }
+            }
         }
     }
 }
