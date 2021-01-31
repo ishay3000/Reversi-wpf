@@ -5,52 +5,48 @@ namespace Reversi
 {
     public static class ReversiGameStrategy
     {
-        private static int BoardSize;
-        private static int CurrentAnchorTile;
+        private static int _boardSize;
+        private static int _currentAnchorTile;
         public static List<Tile> GameTiles;
-        private static Player CurrentPlayer;
-        private static bool ConqueredAnyTile = false;
-        private static int _right,
-            _left,
-            _down,
-            _up,
-            _southWest,
-            _southEast,
-            _northEast,
-            _northWest;
+        private static List<Tile> _opponentTiles;
+        private static Dictionary<string, int> _directionsDictionary;
+
 
         public static void InitializeStrategy(List<Tile> tiles, int boardSize)
         {
             GameTiles = tiles;
-            BoardSize = boardSize;
-            _right = 1;
-            _left = -1;
-            _down = BoardSize;
-            _up = -BoardSize;
-            _southWest = BoardSize - 1;
-            _southEast = BoardSize + 1;
-            _northEast = -BoardSize + 1;
-            _northWest = -BoardSize - 1;
+            _opponentTiles = new List<Tile>();
+            _boardSize = boardSize;
+            _directionsDictionary = new Dictionary<string, int>()
+            {
+                {"right", 1},
+                {"left", -1},
+                {"up", -boardSize},
+                {"down", boardSize},
+                {"south west", boardSize - 1},
+                {"south east", boardSize + 1},
+                {"north west", -boardSize - 1},
+                {"north east", -boardSize + 1}
+            };
         }
 
         public static bool StartConquering(Player player, int conqueringTile)
         {
-            CurrentPlayer = player;
-            CurrentAnchorTile = conqueringTile;
+            _currentAnchorTile = conqueringTile;
 
-            ConquerTilesInDirection(_right);
-            ConquerTilesInDirection(_left);
-            ConquerTilesInDirection(_down);
-            ConquerTilesInDirection(_up);
-            ConquerTilesInDirection(_southWest);
-            ConquerTilesInDirection(_southEast);
-            ConquerTilesInDirection(_northWest);
-            ConquerTilesInDirection(_northEast);
-
-            if (ConqueredAnyTile)
+            foreach (KeyValuePair<string, int> direction in _directionsDictionary)
             {
-                GameTiles[CurrentAnchorTile].Conquer(CurrentPlayer);
-                ConqueredAnyTile = false;
+                FindOpponentTiles(direction.Value, player);
+            }
+
+            if (_opponentTiles.Count > 0)
+            {
+                GameTiles[_currentAnchorTile].Conquer(player);
+                foreach (Tile opponentTile in _opponentTiles)
+                {
+                    opponentTile.Conquer(player);
+                }
+                _opponentTiles.Clear();
 
                 return true;
             }
@@ -65,9 +61,10 @@ namespace Reversi
             return index > 0 && index < GameTiles.Count;
         }
 
-        private static List<Tile> FindOpposingTiles(int startIndex, int offset)
+        private static void FindOpponentTiles(int offset, Player player)
         {
             List<Tile> opponentTiles = new List<Tile>();
+            int startIndex = _currentAnchorTile;
             bool encounteredBlankTile = false, encounteredAllyTile = false;
             do
             {
@@ -82,45 +79,47 @@ namespace Reversi
                     encounteredBlankTile = true;
                     break;
                 }
-                if (tile.OccupyingPlayer.PlayerId == CurrentPlayer.PlayerId)
+                if (tile.OccupyingPlayer.PlayerId == player.PlayerId)
                 {
                     encounteredAllyTile = true;
                     break;
                 }
 
                 opponentTiles.Add(GameTiles[startIndex]);
-            } while (startIndex % BoardSize != 0);
+            } while (startIndex % _boardSize != 0);
 
             if (encounteredBlankTile || !encounteredAllyTile)
-            {
-                return null;
-            }
-
-            return opponentTiles;
-        }
-
-        private static void ConquerTilesInDirection(int offset)
-        {
-            List<Tile> opponentTiles = FindOpposingTiles(CurrentAnchorTile, offset);
-
-            if (opponentTiles == null)
             {
                 return;
             }
 
-            if (opponentTiles.Count > 0)
+            foreach (Tile opponentTile in opponentTiles)
             {
-                ConqueredAnyTile = true;
-                foreach (Tile opponentTile in opponentTiles)
-                {
-                    opponentTile.Conquer(CurrentPlayer);
-                }
+                _opponentTiles.Add(opponentTile);
             }
-
         }
 
         public static bool PlayerHasMovesLeft(Player player)
         {
+            for (int i = 0; i < GameTiles.Count; i++)
+            {
+                if (GameTiles[i].Conquered)
+                {
+                    continue;
+                }
+
+                _currentAnchorTile = i;
+                foreach (KeyValuePair<string, int> direction in _directionsDictionary)
+                {
+                    FindOpponentTiles(direction.Value, player);
+                    if (_opponentTiles.Count > 0)
+                    {
+                        _opponentTiles.Clear();
+                        return true;
+                    }
+                }
+            }
+
             return false;
         }
     }

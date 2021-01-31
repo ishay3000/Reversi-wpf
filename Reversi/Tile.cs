@@ -8,7 +8,9 @@ namespace Reversi
         private string _tag;
         private bool _conquered;
         private Player _occupyingPlayer;
-
+        private int _playersCount = 2;
+        private int _currentPlayerTurn;
+        private string _currentPlayerColor;
         public Player OccupyingPlayer
         {
             get => _occupyingPlayer;
