@@ -90,27 +90,30 @@ namespace Reversi
             MessageBox.Show("Game Over! The winner is the " + winner + " player!");
         }
 
+        private int GetNextPlayerTurn()
+        {
+            return _playersCount - CurrentPlayerTurn - 1;
+        }
+
         public void MakeMove(int row, int column)
         {
-            if (IsGameOver())
-            {
-                FinalizeGame();
-            }
-            else if (CurrentPlayerCantMove())
-            {
-                MessageBox.Show("Current player can't move. Switching to the other player.");
-                CurrentPlayerTurn = _playersCount - CurrentPlayerTurn - 1;
-            }
-            else if (!GameBoard.ConquerTile(Players[CurrentPlayerTurn], GameBoard.GameTiles[row][column]))
+            if (!GameBoard.ConquerTile(Players[CurrentPlayerTurn], GameBoard.GameTiles[row][column]))
             {
                 MessageBox.Show("Invalid move! Pick a different tile.");
             }
             else
             {
-                CurrentPlayerTurn = _playersCount - CurrentPlayerTurn - 1;
+                CurrentPlayerTurn = GetNextPlayerTurn();
                 if (IsGameOver())
                 {
                     FinalizeGame();
+                }
+                else if (CurrentPlayerCantMove())
+                {
+                    MessageBox.Show(Players[CurrentPlayerTurn].PlayerColorName +
+                                    " player can't move. Switching to the " +
+                                    Players[_playersCount - CurrentPlayerTurn - 1].PlayerColorName + " player.");
+                    CurrentPlayerTurn = _playersCount - CurrentPlayerTurn - 1;
                 }
             }
         }
