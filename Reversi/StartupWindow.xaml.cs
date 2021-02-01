@@ -48,7 +48,9 @@ namespace Reversi
             boardSize = IsValidBoardSize(boardSizeString);
             if (boardSize != -1)
             {
-                // TODO: Close this window, and open the game board window.
+                Window window = new GameWindow(boardSize);
+                window.Show();
+                this.Close();
             }
             else
             {

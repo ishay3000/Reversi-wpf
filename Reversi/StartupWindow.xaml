@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:Reversi"
         mc:Ignorable="d"
         Background="Beige"
-        Title="Welcome to Reversi!" Height="450" Width="800">
+        WindowStartupLocation="CenterScreen"
+        Title="Welcome to Reversi!" Height="350" Width="500">
     <Grid>
         <StackPanel Orientation="Vertical" VerticalAlignment="Center">
             <Label Content="Welcome to Reversi!" HorizontalAlignment="Center"></Label>
@@ -14,6 +15,5 @@
             <TextBox x:Name="TextboxBoardSize" Width="270" Padding="4"/>
             <Button x:Name="BtnStart" Content="Start game" Width="270" Click="BtnStart_OnClick"/>
         </StackPanel>
-        
     </Grid>
 </Window>
