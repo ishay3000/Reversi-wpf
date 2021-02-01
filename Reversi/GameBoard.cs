@@ -38,6 +38,10 @@ namespace Reversi
 
         public bool ConquerTile(Player player, Tile tile)
         {
+            if (tile.Conquered)
+            {
+                return false;
+            }
             return ReversiGameStrategy.StartConquering(player, tile);
         }
     }
