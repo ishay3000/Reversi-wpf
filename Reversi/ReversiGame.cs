@@ -1,17 +1,20 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Windows;
+using System.Windows.Media;
 
 namespace Reversi
 {
     public class ReversiGame : BasePropertyChanged
     {
-        public GameEntities GameEntities { get; set; }
+        public GameBoard GameBoard { get; set; }
+        public List<Player> Players { get; set; }
         public int BoardSize { get; }
         private int _playersCount = 2;
         private int _currentPlayerTurn;
 
         public string CurrentPlayerColor
         {
-            get => GameEntities.Players[_currentPlayerTurn].PlayerColorName;
+            get => Players[_currentPlayerTurn].PlayerColorName;
             set => OnPropertyChanged();
         }
 
@@ -33,20 +36,24 @@ namespace Reversi
         }
         public void InitializeGame()
         {
-            GameEntities = new GameEntities(BoardSize);
-            CurrentPlayerTurn = GameEntities.Players[0].PlayerId;
-            ReversiGameStrategy.InitializeStrategy(GameEntities.GameBoard.GameTiles, BoardSize);
+            Players = new List<Player>(_playersCount);
+            Players.Add(new Player(Brushes.Blue, 0, "Blue"));
+            Players.Add(new Player(Brushes.Red, 1, "Red"));
+
+            GameBoard = new GameBoard(BoardSize, Players);
+            CurrentPlayerTurn = Players[0].PlayerId;
+            ReversiGameStrategy.InitializeStrategy(GameBoard.GameTiles, BoardSize);
         }
 
         private bool CurrentPlayerCantMove()
         {
-            return !ReversiGameStrategy.PlayerHasMovesLeft(GameEntities.Players[CurrentPlayerTurn]);
+            return !ReversiGameStrategy.PlayerHasMovesLeft(Players[CurrentPlayerTurn]);
         }
 
         public bool IsGameOver()
         {
-            return !ReversiGameStrategy.PlayerHasMovesLeft(GameEntities.Players[0]) &&
-                   !ReversiGameStrategy.PlayerHasMovesLeft(GameEntities.Players[1]);
+            return !ReversiGameStrategy.PlayerHasMovesLeft(Players[0]) &&
+                   !ReversiGameStrategy.PlayerHasMovesLeft(Players[1]);
         }
 
         public void FinalizeGame()
@@ -56,7 +63,7 @@ namespace Reversi
             {
                 for (int j = 0; j < BoardSize; j++)
                 {
-                    Tile tile = GameEntities.GameBoard.GameTiles[i][j];
+                    Tile tile = GameBoard.GameTiles[i][j];
                     if (tile.Conquered)
                     {
                         if (tile.OccupyingPlayer.PlayerId == 0)
@@ -74,11 +81,11 @@ namespace Reversi
             string winner;
             if (player1TilesCount > player2TilesCount)
             {
-                winner = GameEntities.Players[0].PlayerColorName;
+                winner = Players[0].PlayerColorName;
             }
             else
             {
-                winner = GameEntities.Players[1].PlayerColorName;
+                winner = Players[1].PlayerColorName;
             }
             MessageBox.Show("Game Over! The winner is the " + winner + " player!");
         }
@@ -94,7 +101,7 @@ namespace Reversi
                 MessageBox.Show("Current player can't move. Switching to the other player.");
                 CurrentPlayerTurn = _playersCount - CurrentPlayerTurn - 1;
             }
-            else if (!GameEntities.GameBoard.ConquerTile(GameEntities.Players[CurrentPlayerTurn], GameEntities.GameBoard.GameTiles[row][column]))
+            else if (!GameBoard.ConquerTile(Players[CurrentPlayerTurn], GameBoard.GameTiles[row][column]))
             {
                 MessageBox.Show("Invalid move! Pick a different tile.");
             }

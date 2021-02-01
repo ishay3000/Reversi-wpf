@@ -102,7 +102,6 @@ namespace Reversi
 
         public static bool PlayerHasMovesLeft(Player player)
         {
-            Console.WriteLine("==================================");
             for (int i = 0; i < _boardSize; i++)
             {
                 for (int j = 0; j < _boardSize; j++)
@@ -118,11 +117,6 @@ namespace Reversi
                         FindOpponentTiles(direction.Value, player);
                         if (_opponentTiles.Count > 0)
                         {
-                            Console.WriteLine($"Player {player.PlayerColorName} can conquer the following tiles:");
-                            foreach (Tile opponentTile in _opponentTiles)
-                            {
-                                Console.WriteLine($"[{opponentTile.Coordination.Row}][{opponentTile.Coordination.Column}]");
-                            }
                             _opponentTiles.Clear();
                             return true;
                         }

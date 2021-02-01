@@ -10,7 +10,7 @@
 
     <Window.Resources>
         <DataTemplate x:Key="DataTemplate_Level2">
-            <Button Tag="{Binding Tag}" Content="{Binding Tag}" Background="{Binding Brush, Mode=TwoWay}"
+            <Button Tag="{Binding Tag}" Background="{Binding Brush, Mode=TwoWay}"
                     Click="TileButton_Click"
                     Height="50" Width="50" Margin="4" />
         </DataTemplate>
@@ -32,7 +32,7 @@
                        HorizontalAlignment="Center" />
 
             <ItemsControl x:Name="GameBoard" ItemTemplate="{DynamicResource DataTemplate_Level1}"
-                          ItemsSource="{Binding GameEntities.GameBoard.GameTiles}" />
+                          ItemsSource="{Binding GameBoard.GameTiles}" />
         </StackPanel>
     </Grid>
 </Window>
