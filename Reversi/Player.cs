@@ -7,6 +7,7 @@ namespace Reversi
         public Brush PlayerColor { get; set; }
         public int PlayerId { get; set; }
         public string PlayerColorName { get; set; }
+        public int Score { get; set; } = 0;
 
         public Player(Brush playerColor, int playerId, string colorName)
         {
