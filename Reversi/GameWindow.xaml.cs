@@ -5,16 +5,15 @@ using System.Windows.Controls;
 namespace Reversi
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for GameWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class GameWindow : Window
     {
         private ReversiGame _reversiGame;
-        public MainWindow()
+        public GameWindow(int boardSize)
         {
             InitializeComponent();
-
-            int boardSize = 8;
+            
             _reversiGame = new ReversiGame(boardSize);
 
             DataContext = _reversiGame;
