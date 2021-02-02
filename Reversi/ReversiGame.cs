@@ -96,16 +96,16 @@ namespace Reversi
                 }
             }
 
-            string winner;
+            Player winner;
             if (player1TilesCount > player2TilesCount)
             {
-                winner = Players[0].PlayerColorName;
+                winner = Players[0];
             }
             else
             {
-                winner = Players[1].PlayerColorName;
+                winner = Players[1];
             }
-            MessageBox.Show("Game Over! The winner is the " + winner + " player!");
+            MessageBox.Show("Game Over! The winner is the " + winner.PlayerColorName + " player, with a score of " + winner.Score);
         }
 
         private int GetNextPlayerTurn()
