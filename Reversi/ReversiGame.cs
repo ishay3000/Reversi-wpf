@@ -9,8 +9,24 @@ namespace Reversi
         public GameBoard GameBoard { get; set; }
         public List<Player> Players { get; set; }
         public int BoardSize { get; }
-        private int _playersCount = 2;
+        private const int PlayersCount = 2;
         private int _currentPlayerTurn;
+        private string _gameTitle;
+
+
+        public string GameTitle
+        {
+            get
+            {
+                return _gameTitle;
+            }
+
+            set
+            {
+                _gameTitle = value;
+                OnPropertyChanged();
+            }
+        }
 
         public string CurrentPlayerColor
         {
@@ -36,13 +52,15 @@ namespace Reversi
         }
         public void InitializeGame()
         {
-            Players = new List<Player>(_playersCount);
+            Players = new List<Player>(PlayersCount);
             Players.Add(new Player(Brushes.Blue, 0, "Blue"));
             Players.Add(new Player(Brushes.Red, 1, "Red"));
 
             GameBoard = new GameBoard(BoardSize, Players);
             CurrentPlayerTurn = Players[0].PlayerId;
             ReversiGameStrategy.InitializeStrategy(GameBoard.GameTiles, BoardSize);
+
+            UpdateGameStats();
         }
 
         private bool CurrentPlayerCantMove()
@@ -78,21 +96,48 @@ namespace Reversi
                 }
             }
 
-            string winner;
+            Player winner;
             if (player1TilesCount > player2TilesCount)
             {
-                winner = Players[0].PlayerColorName;
+                winner = Players[0];
             }
             else
             {
-                winner = Players[1].PlayerColorName;
+                winner = Players[1];
             }
-            MessageBox.Show("Game Over! The winner is the " + winner + " player!");
+            MessageBox.Show("Game Over! The winner is the " + winner.PlayerColorName + " player, with a score of " + winner.Score);
         }
 
         private int GetNextPlayerTurn()
         {
-            return _playersCount - CurrentPlayerTurn - 1;
+            return PlayersCount - CurrentPlayerTurn - 1;
+        }
+
+        private void UpdateGameStats()
+        {
+            foreach (Player player in Players)
+            {
+                player.Score = 0;
+            }
+
+            foreach (List<Tile> row in GameBoard.GameTiles)
+            {
+                foreach (Tile tile in row)
+                {
+                    if (tile.Conquered)
+                    {
+                        Players[tile.OccupyingPlayer.PlayerId].Score++;
+                    }
+                }
+            }
+
+            string tmpTitle = "Reversi    ";
+            foreach (var player in Players)
+            {
+                tmpTitle += player.PlayerColorName + "'s score: " + player.Score + "    ";
+            }
+
+            GameTitle = tmpTitle;
         }
 
         public void MakeMove(int row, int column)
@@ -103,6 +148,7 @@ namespace Reversi
             }
             else
             {
+                UpdateGameStats();
                 CurrentPlayerTurn = GetNextPlayerTurn();
                 if (IsGameOver())
                 {
@@ -112,8 +158,8 @@ namespace Reversi
                 {
                     MessageBox.Show(Players[CurrentPlayerTurn].PlayerColorName +
                                     " player can't move. Switching to the " +
-                                    Players[_playersCount - CurrentPlayerTurn - 1].PlayerColorName + " player.");
-                    CurrentPlayerTurn = _playersCount - CurrentPlayerTurn - 1;
+                                    Players[PlayersCount - CurrentPlayerTurn - 1].PlayerColorName + " player.");
+                    CurrentPlayerTurn = PlayersCount - CurrentPlayerTurn - 1;
                 }
             }
         }
