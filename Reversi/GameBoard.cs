@@ -26,9 +26,14 @@ namespace Reversi
                 }
             }
 
+            int middleLeft = 0, middleRight = 0;
             // Generic board size middle indexes.
-            int middleLeft = (int)Math.Floor((double) (BoardSize - 1) / 2);
-            int middleRight = (int)Math.Floor((double) BoardSize / 2);
+            middleLeft = (int)Math.Floor((double)(BoardSize - 1) / 2);
+            middleRight = (int)Math.Floor((double)BoardSize / 2);
+            if (BoardSize % 2 != 0)
+            {
+                middleRight += 1;
+            }
 
             GameTiles[middleLeft][middleLeft].Conquer(players[0]);
             GameTiles[middleLeft][middleRight].Conquer(players[1]);

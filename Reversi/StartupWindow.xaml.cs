@@ -29,10 +29,10 @@ namespace Reversi
         private int IsValidBoardSize(string boardSizeString)
         {
             int boardSize;
-            const int minimumBoardSize = 4;
+            const int minimumBoardSize = 3;
             if (int.TryParse(boardSizeString, out boardSize))
             {
-                if (boardSize % 2 == 0 && boardSize >= minimumBoardSize)
+                if (boardSize >= minimumBoardSize)
                 {
                     return boardSize;
                 }
