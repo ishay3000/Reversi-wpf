@@ -2,6 +2,7 @@
 
 namespace Reversi
 {
+    // המחלקה הזו מסמלת שחקן במשחק, אשר בעל תכונות צבע, ת"ז, שם צבע (עבוד ההדפסה של הניקוד), וניקוד.
     public class Player
     {
         public Brush PlayerColor { get; set; }

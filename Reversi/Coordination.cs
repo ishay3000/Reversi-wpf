@@ -1,5 +1,6 @@
 ﻿namespace Reversi
 {
+    // המחלקה הזו מסמלת מיקום לוגי במשחק, אשר מורכבת ממיקום של שורה ועמודה.
     public class Coordination
     {
         public int Row { get; set; }

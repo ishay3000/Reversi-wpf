@@ -4,6 +4,8 @@ using System.Windows.Media;
 
 namespace Reversi
 {
+    // המחלקה הזו מסמלת את המשחק, ומכילה את ישויות המשחק, לוח המשחק,
+    // רשימת השחקנים, גודל הלוח, תור השחקן הנוכחי, וכותרת החלון של המשחק אשר מתעדכנת עם הניקוד המשתנה
     public class ReversiGame : BasePropertyChanged
     {
         public GameBoard GameBoard { get; set; }
@@ -50,6 +52,8 @@ namespace Reversi
             BoardSize = boardSize;
             InitializeGame();
         }
+
+        // פעולה זו מאתחלת את המשחק, בכך שמאתחלת 2 שחקנים בצבעים שונים, וכן מאתחלת את לוח המשחק, ואת אסטרטגיית המשחק.
         public void InitializeGame()
         {
             Players = new List<Player>(PlayersCount);
@@ -73,7 +77,8 @@ namespace Reversi
             return !ReversiGameStrategy.PlayerHasMovesLeft(Players[0]) &&
                    !ReversiGameStrategy.PlayerHasMovesLeft(Players[1]);
         }
-
+        
+        // פעולה זו מונה את הניקוד של כל אחד מהשחקנים, ומכריזה על זוכה.
         public void FinalizeGame()
         {
             int player1TilesCount = 0, player2TilesCount = 0;
@@ -96,16 +101,24 @@ namespace Reversi
                 }
             }
 
-            Player winner;
-            if (player1TilesCount > player2TilesCount)
+            if (player1TilesCount == player2TilesCount)
             {
-                winner = Players[0];
+                MessageBox.Show("Game Over! The game ended with a draw of " + player2TilesCount + " points to each player.");
             }
             else
             {
-                winner = Players[1];
+                Player winner;
+                if (player1TilesCount > player2TilesCount)
+                {
+                    winner = Players[0];
+                }
+                else
+                {
+                    winner = Players[1];
+                }
+                MessageBox.Show("Game Over! The winner is the " + winner.PlayerColorName + " player, with a score of " + winner.Score);
             }
-            MessageBox.Show("Game Over! The winner is the " + winner.PlayerColorName + " player, with a score of " + winner.Score);
+
         }
 
         private int GetNextPlayerTurn()

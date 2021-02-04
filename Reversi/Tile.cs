@@ -2,6 +2,7 @@
 
 namespace Reversi
 {
+    // המחלקה הזו מסמלת משבצת בלוח המשחק, ומורכבת מצבע המשבצת, האם היא כבושה, השחקן שכבש אותה, ומיקום לוגי.
     public class Tile : BasePropertyChanged
     {
         private Brush _brush;
@@ -38,7 +39,8 @@ namespace Reversi
                 return _coordination;
             }
         }
-
+        
+        // מייצג את התוכן של הכפתור שהיא שייכת אליו. בעזרת התוכן הזה, נדע את מיקום המשבצת כאשר נלחץ על כפתור כלשהו.
         public string Tag
         {
             get

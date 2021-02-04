@@ -3,7 +3,8 @@ using System.Collections.Generic;
 
 namespace Reversi
 {
-
+    /// המחלקה הזו מסמלת את אסטרטגיית המשחק, ומכילה את גודל הלוח, המשבצת הכובשת הנוכחית,
+    /// מטריצה של משבצות הלוח, רשימת עזר של משבצות יריב, ומפה של כיוונים לבדיקת משבצות.
     public static class ReversiGameStrategy
     {
         private static int _boardSize;
